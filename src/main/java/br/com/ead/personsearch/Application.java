@@ -6,10 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.retry.annotation.EnableRetry;
 
-@EnableRetry
 @SpringBootApplication
-@EnableConfigurationProperties
 @SpringBootConfiguration
+@EnableConfigurationProperties
 public class Application {
 
     public static void main(String[] args) {

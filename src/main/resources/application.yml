@@ -1,6 +1,19 @@
+application:
+  version: "1.0.0.0"
+
 spring:
   data:
     elasticsearch:
       client:
         reactive:
           connection-timeout: 30s
+
+resilience4j.circuitbreaker:
+  instances:
+    person-service-save:
+      slidingWindowSize: 50
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: TIME_BASED
+      minimumNumberOfCalls: 20
+      waitDurationInOpenState: 50s
+      failureRateThreshold: 50
