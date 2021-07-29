@@ -2,12 +2,12 @@ package br.com.ead.personsearch.controllers
 
 import br.com.ead.personsearch.model.PersonEntity
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.hamcrest.Matcher
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 
@@ -15,14 +15,18 @@ import java.time.LocalDate
 
 import static br.com.ead.personsearch.controllers.PersonController.PERSON_PATH
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
-import static org.hamcrest.core.Is.is
+import static org.hamcrest.CoreMatchers.is
+import static org.hamcrest.Matchers.contains
+import static org.hamcrest.Matchers.hasSize
+import static org.hamcrest.beans.HasPropertyWithValue.hasProperty
 import static org.hamcrest.core.IsEqual.equalTo
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc
+@WithMockUser(username = 'username', roles = 'USER', password = 'password')
 class PersonControllerTest extends Specification {
 
     @Autowired
@@ -72,5 +76,11 @@ class PersonControllerTest extends Specification {
         response.andDo(print())
                 .andExpect(status().is4xxClientError())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath('$.errors', hasSize(3)))
+//                .andExpect(jsonPath('$.errors', contains(
+//                        hasProperty("field", is("uuid")),
+//                        hasProperty("field", is("dateOfBirth")),
+//                        hasProperty("field", is("name"))
+//                )))
     }
 }

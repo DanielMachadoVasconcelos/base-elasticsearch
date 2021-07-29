@@ -26,7 +26,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-//    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
@@ -42,6 +41,8 @@ dependencies {
     implementation 'org.codehaus.groovy:groovy-all:3.0.8'
     implementation 'org.spockframework:spock-core:2.0-groovy-3.0'
     implementation 'org.spockframework:spock-spring:2.0-groovy-3.0'
+
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 
     compileOnly 'org.projectlombok:lombok'
 

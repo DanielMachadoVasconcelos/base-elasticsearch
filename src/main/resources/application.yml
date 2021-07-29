@@ -1,5 +1,6 @@
 application:
   version: "1.0.0.0"
+  name: "person-search"
 
 spring:
   data:
