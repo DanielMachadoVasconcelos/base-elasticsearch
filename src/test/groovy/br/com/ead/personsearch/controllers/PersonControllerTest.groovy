@@ -2,8 +2,6 @@ package br.com.ead.personsearch.controllers
 
 import br.com.ead.personsearch.model.PersonEntity
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.hamcrest.Matcher
-import org.hamcrest.Matchers
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -18,13 +16,7 @@ import java.time.LocalDate
 import static br.com.ead.personsearch.controllers.PersonController.PERSON_PATH
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
 import static org.hamcrest.CoreMatchers.is
-import static org.hamcrest.Matchers.contains
-import static org.hamcrest.Matchers.containsInAnyOrder
-import static org.hamcrest.Matchers.equalTo
-import static org.hamcrest.Matchers.hasItemInArray
 import static org.hamcrest.Matchers.hasSize
-import static org.hamcrest.Matchers.hasItem
-import static org.hamcrest.beans.HasPropertyWithValue.hasProperty
 import static org.hamcrest.core.IsEqual.equalTo
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print

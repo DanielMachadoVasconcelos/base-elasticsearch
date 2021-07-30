@@ -5,6 +5,7 @@ import br.com.ead.personsearch.repositories.PersonRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.retry.annotation.CircuitBreaker;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,7 +17,8 @@ public class PersonService {
 
     PersonRepository repository;
 
-    @CircuitBreaker(label = "person-service-save")
+    @Retryable(label = "person-service-save-retry")
+    @CircuitBreaker(label = "person-service-save-circuit-breaker")
     public PersonEntity save(PersonEntity person) {
         return repository.save(person);
     }

@@ -2,6 +2,15 @@ application:
   version: "1.0.0.0"
   name: "person-search"
 
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health, info, ping, metrics
+
 spring:
   data:
     elasticsearch:
@@ -11,10 +20,19 @@ spring:
 
 resilience4j.circuitbreaker:
   instances:
-    person-service-save:
+    person-service-save-circuit-breaker:
+      registerHealthIndicator: true
       slidingWindowSize: 50
       permittedNumberOfCallsInHalfOpenState: 3
       slidingWindowType: TIME_BASED
       minimumNumberOfCalls: 20
       waitDurationInOpenState: 50s
       failureRateThreshold: 50
+
+resilience4j.retry:
+  instances:
+    person-service-save-retry:
+      maxAttempts: 3
+      waitDuration: 5s
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
