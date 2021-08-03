@@ -1,1 +1,4 @@
-rootProject.name = 'person-search'
+rootProject.name = 'base-elasticsearch'
+include 'subsystem-tests'
+include 'person-search'
+
