@@ -1,8 +1,9 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.0'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'groovy'
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "com.avast.gradle.docker-compose" version "0.14.9"
 }
 
 group = 'br.com.ead.personsearch'
@@ -19,6 +20,16 @@ repositories {
     mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
     maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dockerCompose.isRequiredBy(test)
+
+dockerCompose {
+    projectName = 'person-search'
+    projectNamePrefix  = 'docker-compose'
+    stopContainers = false
+    removeContainers = false
+    removeOrphans = true
 }
 
 dependencies {
@@ -58,4 +69,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events "skipped", "failed"
+    }
 }
