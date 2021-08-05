@@ -24,7 +24,7 @@ public class PersonEntity {
 
     @Id
     @NotNull
-    UUID uuid;
+    String uuid;
 
     @NotBlank
     @Field(name = "name", type = FieldType.Keyword)

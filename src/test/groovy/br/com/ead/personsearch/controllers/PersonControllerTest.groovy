@@ -37,7 +37,7 @@ class PersonControllerTest extends Specification {
     def 'Should save a person when receiving a POST request on /person endpoint'() {
 
         given: 'A random Jhon Doe person'
-        def expectedId = UUID.randomUUID()
+        def expectedId = UUID.randomUUID().toString()
         def expectedName = 'Jhon Doe'
         def expectedDateOfBirth = LocalDate.now().minusYears(21L)
         def person = new PersonEntity(expectedId, expectedName, expectedDateOfBirth)
