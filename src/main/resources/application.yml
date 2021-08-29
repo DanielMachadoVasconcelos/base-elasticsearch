@@ -3,6 +3,8 @@ application:
   name: "person-search"
 
 management:
+  server:
+    port: 8080
   health:
     circuitbreakers:
       enabled: true
@@ -13,7 +15,7 @@ management:
 
 spring:
   kafka:
-    bootstrap-servers: ${kafka_bootstrap_servers:localhost:9092}
+    bootstrap-servers: "localhost:29092,kafka:9092,localhost:9200"
     consumer:
       auto-offset-reset: earliest
       group-id: person-group-id
@@ -26,7 +28,7 @@ spring:
       properties:
         - json.trusted.packages=*
     producer:
-      bootstrap-servers: localhost:29092
+      bootstrap-servers: "localhost:29092,kafka:9092,localhost:9200"
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     listener:
@@ -35,9 +37,11 @@ spring:
 
   data:
     elasticsearch:
-      client:
-        reactive:
-          connection-timeout: 30s
+      rest:
+        read-timeout: 10s
+        uris:
+          - "localhost:9200"
+          - "localhost:9300"
 
 resilience4j.circuitbreaker:
   instances:
@@ -57,3 +61,9 @@ resilience4j.retry:
       waitDuration: 5s
       enableExponentialBackoff: true
       exponentialBackoffMultiplier: 2
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web.client.RestTemplate: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: TRACE

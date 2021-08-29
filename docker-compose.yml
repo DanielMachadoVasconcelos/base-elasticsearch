@@ -4,19 +4,38 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
     container_name: elasticsearch
     environment:
+      - "xpack.security.enabled=false"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.type=single-node"
+      - "node.name=elasticsearch"
+      - "cluster.name=person-search"
     mem_limit: "2g"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
     networks:
-      - elastic
+      - person-network
     healthcheck:
-      test: [ "CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health?wait_for_status=yellow || exit 1" ]
       interval: 30s
       timeout: 30s
       retries: 3
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.4.0
+    environment:
+      - "ELASTICSEARCH_URL=http://elasticsearch:9200"
+      - "ELASTICSEARCH_HOSTS=http://elasticsearch:9200"
+    ports:
+      - 5601:5601
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - person-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -44,6 +63,29 @@ services:
     healthcheck:
       test: [ "CMD", "bash", "-c", "unset" , "JMX_PORT" ,";" ,"kafka-topics.sh","--zookeeper","zookeeper:2181","--list" ]
 
+  person-search:
+    container_name: person-search
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      "kafka_bootstrap_servers": "kafka:9092,localhost:29092"
+#      ELASTICSEARCH_HOST: "elasticsearch:9200"
+    ports:
+      - 8080:8080
+    networks:
+      - person-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+
 networks:
-  elastic:
+  person-network:
     driver: bridge
+    name: integration-test
+
+volumes:
+  elasticsearch-data:
+    driver: local

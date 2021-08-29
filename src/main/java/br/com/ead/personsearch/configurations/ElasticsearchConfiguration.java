@@ -12,13 +12,16 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "br.com.ead.personsearch.repositories")
-@ComponentScan(basePackages = { "br.com.ead.personsearch.services" })
+@ComponentScan(basePackages = {"br.com.ead.personsearch.services"})
 public class ElasticsearchConfiguration {
 
     @Bean
     public RestHighLevelClient client() {
         var clientConfiguration = ClientConfiguration.builder()
-                .connectedTo("localhost:9200", "localhost:9300")
+                .connectedTo("localhost:9200",
+                        "localhost:9300",
+                        "elasticsearch:9200",
+                        "elasticsearch:9300")
                 .build();
 
         return RestClients.create(clientConfiguration).rest();
