@@ -7,8 +7,9 @@ plugins {
 }
 
 group = 'br.com.ead.personsearch'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '16'
+version = '1.0.0.0-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 configurations {
     compileOnly {

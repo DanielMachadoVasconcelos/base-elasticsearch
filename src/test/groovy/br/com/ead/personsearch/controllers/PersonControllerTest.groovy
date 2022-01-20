@@ -54,7 +54,7 @@ class PersonControllerTest extends Specification {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath('$.name').value(expectedName))
                 .andExpect(jsonPath('$.uuid', equalTo(expectedId.toString())))
-                .andExpect(jsonPath('$.dateOfBirth', is(expectedDateOfBirth.format(ISO_LOCAL_DATE))))
+                .andExpect(jsonPath('$.date_of_birth', is(expectedDateOfBirth.format(ISO_LOCAL_DATE))))
     }
 
     @Test
@@ -77,6 +77,6 @@ class PersonControllerTest extends Specification {
                 .andExpect(jsonPath('$.errors', hasSize(3)))
                 .andExpect(jsonPath("\$.errors[?(@.field == 'uuid')]").exists())
                 .andExpect(jsonPath("\$.errors[?(@.field == 'name')]").exists())
-                .andExpect(jsonPath("\$.errors[?(@.field == 'dateOfBirth')]").exists())
+                .andExpect(jsonPath("\$.errors[?(@.field == 'date_of_birth')]").exists())
     }
 }
